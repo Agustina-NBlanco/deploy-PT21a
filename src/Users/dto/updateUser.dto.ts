@@ -10,6 +10,7 @@ export class UpdateUserDto {
     @IsString()
     name?: string
 
+
     @IsOptional()
     @IsString()
     password?: string

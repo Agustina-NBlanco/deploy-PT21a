@@ -13,17 +13,16 @@ export class ProductsController {
     constructor(private readonly productsService: ProductsService) { }
 
     @Get()
-    async getProductsController(@Query('page') page: string = '1', @Query('limit') limit: string = '5', @Res() res: Response) {
-        const pageNumber = parseInt(page)
-        const limitNumber = parseInt(limit)
+    async getProductsController(@Query('page') page: number = 1, @Query('limit') limit: number = 5, @Res() res: Response) {
 
-        const products = await this.productsService.getProductsService(pageNumber, limitNumber)
+
+        const products = await this.productsService.getProductsService(page, limit)
         return res.status(200).json(products)
     }
 
     @Get(':id')
     async getProductByIdController(@Param('id') id: string, @Res() res: Response) {
-        const product = await this.productsService.getProductByIdService(Number(id))
+        const product = await this.productsService.getProductByIdService(id)
         return res.status(200).json(product)
     }
 
@@ -37,14 +36,14 @@ export class ProductsController {
     @Put(':id')
     @UseGuards(AuthGuard)
     async updateProductController(@Body() product: UpdateProductDto, @Param('id') id: string, @Res() res: Response) {
-        const updatedProduct = await this.productsService.updateProductService(Number(id), product)
+        const updatedProduct = await this.productsService.updateProductService(id, product)
         return res.status(200).json({ id: updatedProduct.id })
     }
 
     @Delete(':id')
     @UseGuards(AuthGuard)
     async deleteProductController(@Param('id') id: string, @Res() res: Response) {
-        const deleteProduct = await this.productsService.deleteProductService(Number(id))
+        const deleteProduct = await this.productsService.deleteProductService(id)
         return res.status(200).json({ message: `El producto con el id ${deleteProduct.id} ha sido eliminado` })
     }
 }

@@ -1,29 +1,60 @@
 import { Injectable } from "@nestjs/common";
-import { UsersRepository } from "./users.repository";
 import { CreateUserDto } from "./dto/createUser.dto";
 import { UpdateUserDto } from "./dto/updateUser.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Users } from "src/entities/users.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class UsersService {
-    constructor(private usersRepository: UsersRepository) { }
+    constructor(@InjectRepository(Users) private readonly usersRepository: Repository<Users>) { }
 
-    getUsersService(page: number, limit: number) {
-        return this.usersRepository.getUsersRepository(page, limit)
+    async getUsersService(page: number, limit: number) {
+        const user = await this.usersRepository.find({
+            skip: (page - 1) * limit,
+            take: limit,
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city'],
+        })
+        return user;
     }
 
-    getUserByIdService(id: number) {
-        return this.usersRepository.getUserByIdRepository(id)
+    async getUserByIdService(id: string) {
+        const user = await this.usersRepository.findOne({
+            where: { id: id },
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city'],
+            relations: ['orders']
+        })
+
+        return user
     }
 
-    createUserService(user: CreateUserDto) {
-        return this.usersRepository.createUserRepository(user)
+    async createUserService(user: CreateUserDto) {
+        const newUser = this.usersRepository.create(user)
+        return await this.usersRepository.save(newUser)
     }
 
-    updateUserService(id: number, user: UpdateUserDto) {
-        return this.usersRepository.updateUserRepository(id, user)
+    async updateUserService(id: string, user: UpdateUserDto) {
+        const existingUser = await this.usersRepository.findOne({ where: { id: id } })
+
+        if (!existingUser) {
+            return null
+        }
+
+        Object.assign(existingUser, user)
+
+        return await this.usersRepository.save(existingUser)
     }
 
-    deleteUserService(id: number) {
-        return this.usersRepository.deleteUserRepository(id)
+    async deleteUserService(id: string) {
+        const userToDelete = this.usersRepository.findOne({ where: { id: id } })
+        await this.usersRepository.delete(id)
+        return userToDelete;
+    }
+
+    async findUserByEmailService(email: string) {
+        return await this.usersRepository.findOne({
+            where: { email: email }
+        })
+
     }
 }

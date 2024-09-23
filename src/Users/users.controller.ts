@@ -15,11 +15,10 @@ export class UsersController {
 
     @Get()
     @UseGuards(AuthGuard)
-    async getUsersController(@Query('page') page: string = '1', @Query('limit') limit: string = '5', @Res() res: Response) {
-        const pageNumber = parseInt(page)
-        const limitNumber = parseInt(limit)
+    async getUsersController(@Query('page') page: number = 1, @Query('limit') limit: number = 5, @Res() res: Response) {
 
-        const users = await this.usersService.getUsersService(pageNumber, limitNumber)
+
+        const users = await this.usersService.getUsersService(page, limit)
         return res.status(200).json(users)
     }
 
@@ -27,7 +26,7 @@ export class UsersController {
     @UseGuards(AuthGuard)
     async getUserByIdController(@Param('id') id: string, @Res() res: Response) {
 
-        const user = await this.usersService.getUserByIdService(Number(id))
+        const user = await this.usersService.getUserByIdService(id)
         return res.status(200).json(user)
     }
 
@@ -40,7 +39,7 @@ export class UsersController {
     @Put(':id')
     @UseGuards(AuthGuard)
     async updateUserController(@Param('id') id: string, @Body() user: UpdateUserDto, @Res() res: Response) {
-        const updatedUser = await this.usersService.updateUserService(Number(id), user)
+        const updatedUser = await this.usersService.updateUserService(id, user)
 
         return res.status(200).json({ id: updatedUser.id })
     }
@@ -48,7 +47,7 @@ export class UsersController {
     @Delete(':id')
     @UseGuards(AuthGuard)
     async deleteUserController(@Param('id') id: string, @Res() res: Response) {
-        const deletedUser = await this.usersService.deleteUserService(Number(id))
+        const deletedUser = await this.usersService.deleteUserService(id)
 
         return res.status(200).json({ message: `El usuario con el id ${deletedUser.id} ha sido eliminado` })
     }
