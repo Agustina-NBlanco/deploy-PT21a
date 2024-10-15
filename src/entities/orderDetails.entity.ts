@@ -2,8 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColum
 import { Orders } from "./orders.entity";
 import { Products } from "./products.entity";
 
-
-
 @Entity({ name: 'orderDetails' })
 export class OrderDetails {
 

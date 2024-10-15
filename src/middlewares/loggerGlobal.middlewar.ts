@@ -11,7 +11,7 @@ export class LoggerGlobalMiddleware implements NestMiddleware {
 }
 
 export function loggerGlobal(req: Request, res: Response, next: NextFunction) {
-    console.log(`Realizando petición a ${req.url} en el metodo ${req.method} a la hora ${new Date()}`);
+    console.log(`Realizando petición a ${req.url} en el metodo ${req.method} a la hora ${new Date().toLocaleString()}`);
 
     next();
 

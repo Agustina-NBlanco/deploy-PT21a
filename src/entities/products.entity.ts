@@ -2,8 +2,6 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColum
 import { Categories } from "./categories.entity";
 import { OrderDetails } from "./orderDetails.entity";
 
-
-
 @Entity({ name: 'products' })
 export class Products {
 
@@ -25,12 +23,10 @@ export class Products {
     @Column({ type: 'varchar', default: '' })
     imgUrl: string
 
-
     @ManyToOne(() => Categories, category => category.products)
     category: Categories
-    //Relación muchos a muchos(N:N) con orderDetails*/
+
     @ManyToMany(() => OrderDetails, orderDetail => orderDetail.products)
     @JoinTable()
     orderDetails: OrderDetails[]
-
 }

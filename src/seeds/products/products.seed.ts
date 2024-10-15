@@ -6,7 +6,6 @@ import { Repository } from "typeorm";
 import { productsMock } from "./products-mock";
 
 
-
 @Injectable()
 export class ProductsSeed {
     constructor(@InjectRepository(Products) private readonly productsRepository: Repository<Products>,

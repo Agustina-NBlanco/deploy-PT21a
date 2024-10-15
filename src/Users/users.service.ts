@@ -13,7 +13,7 @@ export class UsersService {
         const user = await this.usersRepository.find({
             skip: (page - 1) * limit,
             take: limit,
-            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city'],
+            select: ['id', 'email', 'name', 'address', 'phone', 'country', 'city', 'admin'],
         })
         return user;
     }
@@ -55,6 +55,5 @@ export class UsersService {
         return await this.usersRepository.findOne({
             where: { email: email }
         })
-
     }
 }

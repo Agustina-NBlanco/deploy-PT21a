@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/createProduct.dto";
 import { UpdateProductDto } from "./dto/updateProduct.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Products } from "src/entities/products.entity";
+import { Products } from "../entities/products.entity";
 import { In, MoreThan, Repository } from "typeorm";
-import { ProductId } from "src/Orders/dto/createOrder.dto";
+import { ProductId } from "../Orders/dto/createOrder.dto";
 
 @Injectable()
 export class ProductsService {
@@ -77,7 +77,17 @@ export class ProductsService {
         await this.productsRepository.update(id, { stock: product.stock - 1 })
     }
 
+    async uploadImagesService(id: string, url: string) {
+        const product = await this.productsRepository.findOneBy({ id: id })
 
+        if (!product) {
+            throw new Error('El producto no existe')
+        }
+
+        product.imgUrl = url
+        return await this.productsRepository.save(product)
+
+    }
 
 }
 

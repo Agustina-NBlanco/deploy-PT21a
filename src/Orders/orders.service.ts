@@ -3,13 +3,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Orders } from "src/entities/orders.entity";
 import { Repository } from "typeorm";
-import { CreateOrderDto, ProductId } from "./dto/createOrder.dto";
+import { CreateOrderDto } from "./dto/createOrder.dto";
 import { UsersService } from "src/Users/users.service";
 import { ProductsService } from "src/Products/products.service";
 import { CreateOrderDetailDto } from "src/Order-detail/dto/createOrderDetail.dto";
-import { OrderDetailService } from "src/order-detail/order-detail.service";
-
-
+import { OrderDetailService } from "../Order-detail/order-detail.service";
 
 @Injectable()
 export class OrdersService {
@@ -34,7 +32,7 @@ export class OrdersService {
 
         const structureOfOrder = {
             user,
-            date: new Date(),
+            date: new Date().toLocaleString()
         }
 
         const newOrder = await this.ordersRepository.save(
@@ -60,11 +58,9 @@ export class OrdersService {
             },
             price: newOrderDetail.price,
             orderDetailId: newOrderDetail.id
-
         }
 
         return orderResponse
-
     }
 
     private async calculateTotal(products: Array<{ id: string, price: number, stock: number }>) {
