@@ -37,8 +37,9 @@ export class Products {
 
     @ApiProperty({
         description: 'The image of the product'
+
     })
-    @Column({ type: 'varchar', default: '' })
+    @Column({ type: 'varchar', default: 'https://imageExample.com' })
     imgUrl: string
 
     @ApiProperty({
