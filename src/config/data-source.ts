@@ -19,7 +19,7 @@ export const dataSourceOptions: DataSourceOptions = {
     migrations: ['dist/migration/*{.ts,.js}'],
     synchronize: true,
     // dropSchema: true,
-    logging: true,
+    logging: false,
 
 
 }
