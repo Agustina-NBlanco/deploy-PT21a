@@ -55,9 +55,10 @@ export class ProductsService {
     }
 
     async getProductsWithStockService(productsIds: Array<ProductId>) {
+        const ids = productsIds.map(product => product.id)
         return await this.productsRepository.find({
             where: {
-                id: In(productsIds),
+                id: In(ids),
                 stock: MoreThan(0)
             },
             select: ['id', 'price', 'stock']
