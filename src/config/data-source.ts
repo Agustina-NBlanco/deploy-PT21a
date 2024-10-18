@@ -20,6 +20,9 @@ export const dataSourceOptions: DataSourceOptions = {
     synchronize: true,
     // dropSchema: true,
     logging: false,
+    ssl: {
+        rejectUnauthorized: false
+    }
 
 
 }
